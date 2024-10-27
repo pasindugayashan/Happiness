@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Goal-Oriented Journaling - ඉලක්ක-නැඹුරු සඟරාව</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="styles.css"> <!-- Link to your CSS file -->
     <style>
         body {
@@ -78,6 +79,73 @@
         .submit-button:hover {
             background-color: #0056b3; /* Darker shade for hover effect */
         }
+        .popup {
+            display: none; /* Ensure popup is hidden by default */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            animation: fadeIn 0.3s ease;
+        }
+
+        /* Popup content box */
+        .popup-content {
+            background-color: #fff;
+            padding: 20px 30px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            max-width: 300px;
+            position: relative;
+            animation: slideIn 0.4s ease;
+        }
+
+        /* Close button */
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #999;
+        }
+
+        /* Heading and paragraph */
+        .popup-content h2 {
+            margin-top: 0;
+            color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .popup-content p {
+            color: #666;
+        }
+
+        /* Icon styling */
+        .icon {
+            color: #28a745;
+            font-size: 32px; /* Larger icon size */
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(-20px); }
+            to { transform: translateY(0); }
+        }
     </style>
 </head>
 <body>
@@ -147,9 +215,39 @@
             <textarea class="answer-box"></textarea>
         </div>
 
-        <button class="submit-button">Submit</button> <!-- Submit button aligned to the right -->
+        <button onclick="showPopup()" class="submit-button">Submit</button> <!-- Submit button aligned to the right -->
 
         <a href="index.html" class="back-button">Back to Home</a> <!-- Link to your homepage -->
     </div>
+
+    <!-- Popup structure -->
+    <div id="donePopup" class="popup">
+        <div class="popup-content">
+            <span class="close-btn" onclick="closePopup()">&times;</span>
+            <h2><i class="fas fa-check-circle icon"></i> Done!</h2>
+            <p>Your action was successful.</p>
+        </div>
+    </div>
+
+    <!-- JavaScript to control popup visibility -->
+    <script>
+        function showPopup() {
+            // Clear all text areas
+            const textAreas = document.querySelectorAll("textarea");
+            textAreas.forEach(textArea => textArea.value = "");
+
+            // Display the popup
+            document.getElementById("donePopup").style.display = "flex";
+        }
+
+        function closePopup() {
+            document.getElementById("donePopup").style.display = "none";
+        }
+
+        // Ensure popup does not show on page load
+        window.onload = function() {
+            document.getElementById("donePopup").style.display = "none";
+        };
+    </script>
 </body>
 </html>
