@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Stress Level Identification Quiz</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      line-height: 1.6;
+      background-color: #f5f5f5;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    #quiz-container {
+      flex-grow: 1;
+      background-color: #f8f8f8; /* Optional: match quiz background */
+    }
+
+    .home-button {
+      display: inline-block;
+      padding: 10px 20px;
+      margin: 20px auto 0;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      text-align: center;
+      text-decoration: none;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .home-button:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+  <h1>Stress Level Identification Quiz</h1>
+
+  <div id="quiz-container"></div>
+
+  <a href="index.html" class="home-button">Back to Home</a>
+
+  <script>
+    window.addEventListener('DOMContentLoaded', (event) => {
+      const iframe = document.createElement('iframe');
+      iframe.src = 'StressLevelIdentificationQuizChild.html'; // Replace with the actual path
+      iframe.width = '100%';
+      iframe.height = '600px';
+      iframe.style.border = 'none';
+
+      document.getElementById('quiz-container').appendChild(iframe);
+    });
+  </script>
+
+</body>
+</html>

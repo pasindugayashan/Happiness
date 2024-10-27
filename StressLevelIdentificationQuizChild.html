@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Stress Level Identification Quiz</title>
+	<style>
+	@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Sinhala:wght@400;700&display=swap');
+
+	body {
+		font-family: 'Noto Sans Sinhala', sans-serif;
+		/* Apply the font */
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		height: 100vh;
+		background-color: #f5f5f5;
+		/* Light background */
+		margin: 0;
+		text-rendering: optimizeLegibility;
+		/* Improve Sinhala text rendering */
+	}
+
+	.quiz-container {
+		width: 90%;
+		/* Use percentage for responsiveness */
+		max-width: 500px;
+		/* Limit the maximum width */
+		background: #fff;
+		padding: 30px;
+		border-radius: 15px;
+		box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+		/* Soft shadow */
+		text-align: center;
+		transition: transform 0.3s ease;
+		/* Add a hover transition */
+	}
+
+	.quiz-container:hover {
+		transform: translateY(-5px);
+		/* Lift on hover */
+	}
+
+	.progress-bar {
+		width: 100%;
+		background-color: #e9ecef;
+		border-radius: 5px;
+		height: 8px;
+		margin-bottom: 20px;
+		overflow: hidden;
+		/* Hide excess progress */
+	}
+
+	.progress {
+		height: 100%;
+		background-color: #28a745;
+		/* Green progress bar */
+		width: 0%;
+		border-radius: 5px;
+		transition: width 0.3s ease;
+		/* Smooth progress transition */
+	}
+
+	.question-number {
+		font-weight: 600;
+		margin-bottom: 15px;
+		font-size: 1.1rem;
+		color: #343a40;
+		/* Dark gray */
+	}
+
+	.question {
+		font-size: 1.3rem;
+		margin-bottom: 20px;
+		line-height: 1.5;
+		/* Improve readability */
+		color: #212529;
+		/* Darker gray */
+	}
+
+	.options button {
+		display: block;
+		width: 100%;
+		padding: 12px 15px;
+		margin: 8px 0;
+		border: none;
+		border-radius: 8px;
+		background: #f1f5f8;
+		/* Light blue-gray */
+		cursor: pointer;
+		transition: background-color 0.3s ease, transform 0.2s ease;
+		/* Add transitions */
+		font-size: 1rem;
+		color: #495057;
+		/* Grayish-blue */
+	}
+
+	.options button:hover {
+		background-color: #d1e7dd;
+		/* Light green on hover */
+		transform: scale(1.02);
+		/* Slightly enlarge on hover */
+	}
+
+	.options button.selected {
+		background-color: #007bff;
+		/* Blue when selected */
+		color: #fff;
+	}
+
+	.controls {
+		margin-top: 30px;
+	}
+
+	.controls button {
+		padding: 10px 20px;
+		border: none;
+		border-radius: 8px;
+		cursor: pointer;
+		font-size: 1rem;
+		transition: background-color 0.3s ease;
+		/* Add transition */
+	}
+
+	.next-btn {
+		background-color: #28a745;
+		/* Green button */
+		color: #fff;
+	}
+
+	.next-btn:disabled {
+		background-color: #ced4da;
+		/* Light gray when disabled */
+		cursor: not-allowed;
+	}
+
+	.result-container {
+		width: 90%;
+		/* Use percentage for responsiveness */
+		max-width: 500px;
+		/* Limit the maximum width */
+		background: #fff;
+		padding: 30px;
+		border-radius: 15px;
+		box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+		/* Soft shadow */
+		text-align: center;
+		transition: transform 0.3s ease;
+		/* Add a hover transition */
+	}
+
+	.start-btn {
+		padding: 12px 25px;
+		/* Adjust padding for better look */
+		border: none;
+		border-radius: 8px;
+		background-color: #2196F3;
+		color: #fff;
+		font-size: 1.1rem;
+		cursor: pointer;
+		transition: background-color 0.3s ease, transform 0.2s ease;
+		/* Add transitions */
+	}
+
+	.start-btn:hover {
+		background-color: #1976D2;
+		/* Darker blue on hover */
+		transform: scale(1.02);
+		/* Slightly enlarge on hover */
+	}
+
+	.home-btn {
+		display: inline-block;
+		/* Makes it easier to style */
+		padding: 10px 20px;
+		border: none;
+		border-radius: 8px;
+		background-color: #FF9800;
+		color: #fff;
+		font-size: 1rem;
+		cursor: pointer;
+		transition: background-color 0.3s ease, transform 0.2s ease;
+		/* Add transitions */
+		text-decoration: none;
+		/* Remove any underline from the link */
+	}
+
+	.home-btn:hover {
+		background-color: #F57C00;
+		/* Darker orange on hover */
+		transform: scale(1.02);
+		/* Slightly enlarge on hover */
+	}
+
+	/* Media Query for Responsiveness - Adjust as needed */
+	@media (max-width: 500px) {
+		.question {
+			font-size: 1.1rem;
+		}
+
+		.options button {
+			font-size: 0.95rem;
+		}
+	}
+	</style>
+</head>
+
+<body>
+	<div class="quiz-container" id="quizContainer" style="display: none;">
+		<div class="question-number" id="questionNumber">Question 1 of 10</div>
+		<div class="progress-bar">
+			<div class="progress" id="progressBar"></div>
+		</div>
+		<div class="question" id="question">Question text</div>
+		<div class="options" id="options">
+			<!-- Options will be dynamically added here -->
+		</div>
+		<div class="controls">
+			<button class="next-btn" id="nextBtn" disabled>Next</button>
+		</div>
+	</div>
+	<div class="quiz-container" id="startContainer">
+		<button class="start-btn" id="startBtn">Start Quiz</button>
+	</div>
+	<script>
+	 const questions = [
+        { text: "ඔබේ දෛනික වගකීම්වලින් ඔබ කොපමණ වාරයක් වෙහෙසට පත් වෙනවාද?", options: ["A. කලාතුරකින්", "B. සමහර විට", "C. බොහෝ විට", "D. සෑම විටම පාහේ"] },
+        { text: "ඔබ ඔබේ නින්දේ ගුණාත්මකභාවය විස්තර කරන්නේ කෙසේද?", options: ["A. විවේක හා බාධාවකින් තොරව", "B. මම ඉඳහිට අවදි වන නමුත් නැවත පහසුවෙන් නිදාගන්නෙමි", "C. මට නිදා ගැනීමට හෝ නිදා ගැනීමට අපහසු වේ", "D. නින්දෙන් පසුව පවා මට බොහෝ විට වෙහෙස දැනේ"] },
+        { text: "ඔබ කොපමණ වාරයක් හිසරදය, මාංශ පේශි ආතතිය හෝ වෙනත් ශාරීරික රෝග ලක්ෂණ අත්දකිනවාද?", options: ["A. කලාතුරකින්", "B. සමහර විට", "C. බොහෝ විට", "D. සෑම විටම පාහේ"] },
+        { text: "අනපේක්ෂිත වෙනස්කම් සිදු වූ විට, ඔබට හැඟෙන්නේ කෙසේද?", options: ["A. සන්සුන් හා අනුවර්තනය විය හැකි", "B. තරමක් නොසන්සුන් නමුත් සකස් කළ හැකිය", "C. කලකිරීම සහ ආතතිය", "D. සම්පූර්ණයෙන්ම යටපත් වී ඇත"] },
+        { text: "ඔබේ වැඩ හෝ දෛනික කාර්යයන් ගැන ඔබට හැඟෙන්නේ කෙසේද?", options: ["A. ජවසම්පන්න සහ අභිප්රේරණය", "B. බොහෝ විට තෘප්තිමත්, සමහර විට ඇති ආතතිය සමඟ", "C. ජලාපවහනය සහ බොහෝ විට උනන්දුවක් නොදක්වයි", "D. සම්පූර්ණයෙන්ම යටපත් වී දැවී ගියේය"] },
+        { text: "ඔබේ අවධානය යොමු කිරීමේ හැකියාව කෙසේද?", options: ["A. විශිෂ්ටයි; මට හොඳට අවධානය යොමු කරන්න පුළුවන්", "B. හොඳයි, නමුත් මම ඉඳහිට අවධානය වෙනතකට යොමු කරනවා", "C. සාධාරණ; මට සමහර වෙලාවට අවධානය යොමු කරන්න අමාරුයි", "D. දුප්පත්; මට බොහෝ විට අවධානය යොමු කළ නොහැක"] },
+        { text: "ඔබට කොපමණ වාරයක් අන් අය සමඟ කෝපයක් හෝ නොඉවසිලිමත් බවක් දැනෙනවාද?", options: ["A. කලාතුරකින්", "B. සමහර විට", "C. බොහෝ විට", "D. සෑම විටම පාහේ"] },
+        { text: "ඔබේ ආහාර රුචිය විස්තර කරන්නේ කෙසේද?", options: ["A. සැලකිය යුතු වෙනස්කම් නොමැතිව සාමාන්යය", "B. මම සමහර විට සාමාන්‍ය ප්‍රමාණයට වඩා වැඩි හෝ අඩුවෙන් කනවා", "C. මම බොහෝ විට ඕනෑවට වඩා කනවා හෝ මගේ ආහාර රුචිය නැති වෙනවා", "D. මගේ ආතති මට්ටම අනුව මගේ ආහාර රුචිය දැඩි ලෙස වෙනස් වේ"] },
+        { text: "ඔබට කොපමණ වාරයක් කනස්සල්ලක් හෝ කනස්සල්ලක් දැනෙනවාද?", options: ["A. කලාතුරකින්", "B. සමහර විට", "C. බොහෝ විට", "D. සෑම විටම පාහේ"] },
+        { text: "ආතතිය කළමනාකරණය කිරීමට ඔබට ඇති හැකියාව ගැන ඔබට හැඟෙන්නේ කෙසේද?", options: ["A. විශ්වාස සහ පාලනය", "B. සාමාන්‍යයෙන් හරි නමුත් යම් දියුණුවක් භාවිතා කළ හැක", "C. මම ආතතිය ඵලදායී ලෙස කළමනාකරණය කිරීමට අරගල කරමි", "D. මම ආතතියෙන් සම්පූර්ණයෙන්ම යටපත් වී ඇති බවක් දැනේ"] },    
+    ];
+	let currentQuestionIndex = 0;
+	let TotalMarks = 0;
+	const questionEl = document.getElementById('question');
+	const optionsEl = document.getElementById('options');
+	const nextBtn = document.getElementById('nextBtn');
+	const questionNumberEl = document.getElementById('questionNumber');
+	const progressBar = document.getElementById('progressBar');
+	const quizContainer = document.getElementById('quizContainer');
+	const startContainer = document.getElementById('startContainer');
+	document.getElementById('startBtn').onclick = () => {
+		startContainer.style.display = 'none';
+		quizContainer.style.display = 'block';
+		loadQuestion();
+	};
+
+	function loadQuestion() {
+		const question = questions[currentQuestionIndex];
+		questionEl.innerText = question.text;
+		optionsEl.innerHTML = '';
+		questionNumberEl.innerText = `Question ${currentQuestionIndex + 1} of ${questions.length}`;
+		progressBar.style.width = `${((currentQuestionIndex + 1) / questions.length) * 100}%`;
+		nextBtn.disabled = true;
+		question.options.forEach((option, index) => {
+			const button = document.createElement('button');
+			button.innerText = option;
+			button.onclick = () => selectAnswer(index, button);
+			optionsEl.appendChild(button);
+		});
+	}
+
+	function selectAnswer(optionIndex, button) {
+        Array.from(optionsEl.children).forEach(btn => btn.classList.remove('selected'));
+        button.classList.add('selected');
+        nextBtn.disabled = false;
+
+        // Scoring Logic
+        switch (currentQuestionIndex) {
+            case 0: // Question 1
+                if (optionIndex === 0) { // A
+                    TotalMarks++
+                } else if(optionIndex === 1) { // B
+                    TotalMarks+=2
+                } else if(optionIndex === 2) { // C
+                    TotalMarks+=3
+                } else if(optionIndex === 3) { // D
+                    TotalMarks+=4
+                }
+                break;
+            case 1: // Question 2
+                if (optionIndex === 0) { // A
+                    TotalMarks++
+                } else if(optionIndex === 1) { // B
+                    TotalMarks+=2
+                } else if(optionIndex === 2) { // C
+                    TotalMarks+=3
+                } else if(optionIndex === 3) { // D
+                    TotalMarks+=4
+                }
+                break;
+            case 2: // Question 3
+                if (optionIndex === 0) { // A
+                    TotalMarks++
+                } else if(optionIndex === 1) { // B
+                    TotalMarks+=2
+                } else if(optionIndex === 2) { // C
+                    TotalMarks+=3
+                } else if(optionIndex === 3) { // D
+                    TotalMarks+=4
+                }
+                break;
+            case 3: // Question 4
+                if (optionIndex === 0) { // A
+                    TotalMarks++
+                } else if(optionIndex === 1) { // B
+                    TotalMarks+=2
+                } else if(optionIndex === 2) { // C
+                    TotalMarks+=3
+                } else if(optionIndex === 3) { // D
+                    TotalMarks+=4
+                }
+                break;
+            case 4: // Question 5
+                if (optionIndex === 0) { // A
+                    TotalMarks++
+                } else if(optionIndex === 1) { // B
+                    TotalMarks+=2
+                } else if(optionIndex === 2) { // C
+                    TotalMarks+=3
+                } else if(optionIndex === 3) { // D
+                    TotalMarks+=4
+                }
+                break;
+            case 5: // Question 6
+                if (optionIndex === 0) { // A
+                    TotalMarks++
+                } else if(optionIndex === 1) { // B
+                    TotalMarks+=2
+                } else if(optionIndex === 2) { // C
+                    TotalMarks+=3
+                } else if(optionIndex === 3) { // D
+                    TotalMarks+=4
+                }
+                break;
+            case 6: // Question 7
+                if (optionIndex === 0) { // A
+                    TotalMarks++
+                } else if(optionIndex === 1) { // B
+                    TotalMarks+=2
+                } else if(optionIndex === 2) { // C
+                    TotalMarks+=3
+                } else if(optionIndex === 3) { // D
+                    TotalMarks+=4
+                }
+                break;
+            case 7: // Question 8
+                if (optionIndex === 0) { // A
+                    TotalMarks++
+                } else if(optionIndex === 1) { // B
+                    TotalMarks+=2
+                } else if(optionIndex === 2) { // C
+                    TotalMarks+=3
+                } else if(optionIndex === 3) { // D
+                    TotalMarks+=4
+                }
+                break;
+            case 8: // Question 9
+                if (optionIndex === 0) { // A
+                    TotalMarks++
+                } else if(optionIndex === 1) { // B
+                    TotalMarks+=2
+                } else if(optionIndex === 2) { // C
+                    TotalMarks+=3
+                } else if(optionIndex === 3) { // D
+                    TotalMarks+=4
+                }
+                break;
+            case 9: // Question 10
+                if (optionIndex === 0) { // A
+                    TotalMarks++
+                } else if(optionIndex === 1) { // B
+                    TotalMarks+=2
+                } else if(optionIndex === 2) { // C
+                    TotalMarks+=3
+                } else if(optionIndex === 3) { // D
+                    TotalMarks+=4
+                }
+                break;
+        }
+    }
+	
+	nextBtn.onclick = () => {
+		const selectedOption = optionsEl.querySelector('button.selected');
+		if(selectedOption) {
+			TotalMarks += (selectedOption.innerText.charAt(0) === 'D') ? 1 : 0; // Assuming 'D' is the correct answer
+		}
+		currentQuestionIndex++;
+		if(currentQuestionIndex < questions.length) {
+			loadQuestion();
+		} else {
+			showResults();
+		}
+	};
+
+	function showResults() {
+    const resultContainer = document.createElement('div');
+    resultContainer.className = 'result-container';
+    document.body.innerHTML = ''; // Clear previous content
+    let grade, description, suggestion;
+
+    // Determine grade, description, and suggestion based on TotalMarks
+    if (TotalMarks >= 36) {
+        grade = 'Very High Stress (ඉතා ඉහළ ආතතිය)';
+        description = 'විස්තරය: ඔබ දැඩි, නිරන්තර ආතතිය අත්විඳින අතර, එය ඔබේ සෞඛ්‍යයට, සබඳතාවලට සහ සමස්ත යහපැවැත්මට බලපානු ඇත.';
+        suggestion = 'යෝජනා: වෘත්තීය උපදේශනය, ආතති කළමනාකරණ වැඩසටහන්, හෝ ජීවන රටාව වෙනස් කිරීම හරහා මානසික ආතතිය කළමනාකරණය කිරීමට සහ අඩු කිරීමට උපකාර කිරීම සඳහා සහාය ලබා ගැනීම වැදගත් වේ.';    
+    } else if (TotalMarks >= 26) {
+        grade = 'High Stress (අධික ආතතිය)';
+        description = 'විස්තරය: ඔබට නිතරම ආතතිය දැනෙනවා, එය නින්ද, අවධානය සහ මනෝභාවය ඇතුළුව ඔබේ ජීවිතයේ විවිධ අංශවලට බලපෑම් කළ හැකිය.';
+        suggestion = 'යෝජනා: මායිම් සැකසීම, ස්වයං රැකවරණය පුහුණු කිරීම සහ උපකාරක සම්පත් හෝ උපදේශනය ලබා ගැනීමෙන් ඔබේ ආතතිය සක්‍රීයව ආමන්ත්‍රණය කිරීම ආරම්භ කරන්න.';
+    } else if (TotalMarks >= 16) {
+        grade = 'Moderate Stress (මධ්‍යස්ථ ආතතිය)';
+        description = 'විස්තරය: ඔබ යම් ආතතියක් අත්විඳින නමුත් ඉඳහිට අරගල ඇති වුවද සාමාන්‍යයෙන් එය හොඳින් හසුරුවන්න.';
+        suggestion = 'යෝජනා: මානසික ආතතිය වර්ධනය වීම වැලැක්වීම සඳහා සිහිය හෝ නිතිපතා ව්‍යායාම වැනි ලිහිල් කිරීමේ ක්‍රම ඇතුළත් කිරීම සලකා බලන්න.';
+    } else {
+        grade = 'Low Stress (අඩු ආතතිය)';
+        description = 'විස්තරය: ඔබට ආතතියට සෞඛ්‍ය සම්පන්න ප්‍රවේශයක් ඇති බව පෙනේ, දෛනික අභියෝග හොඳින් කළමනාකරණය කරන අතර කලාතුරකින් අධික ලෙස දැනේ.';
+        suggestion = 'යෝජනා: ඔබේ ඵලදායී මුහුණදීමේ උපාය මාර්ග දිගටම භාවිතා කරන්න සහ අඩු පීඩන මට්ටමක් පවත්වා ගැනීමට ස්වයං රැකවරණයට ප්‍රමුඛත්වය දෙන්න.';
+    }
+
+    // Create and display grade, description, and suggestion
+    const gradeDisplay = document.createElement('div');
+    gradeDisplay.innerText = `Your Grade: ${grade}`; // Fixed string interpolation
+    gradeDisplay.style.fontSize = '24px';
+    gradeDisplay.style.fontWeight = 'bold';
+    gradeDisplay.style.marginBottom = '10px';
+    gradeDisplay.style.color = grade === 'Low Stress (අඩු ආතතිය)' ? '#4CAF50' :
+                               grade === 'Moderate Stress (මධ්‍යස්ථ ආතතිය)' ? '#2196F3' :
+                               grade === 'High Stress (අධික ආතතිය)' ? '#FF9800' : '#F44336';
+    resultContainer.appendChild(gradeDisplay);
+
+    const descriptionDisplay = document.createElement('div');
+    descriptionDisplay.innerText = description;
+    descriptionDisplay.style.marginTop = '10px';
+    descriptionDisplay.style.fontSize = '18px';
+    descriptionDisplay.style.lineHeight = '1.5';
+    resultContainer.appendChild(descriptionDisplay);
+
+    const suggestionDisplay = document.createElement('div');
+    suggestionDisplay.innerText = suggestion;
+    suggestionDisplay.style.marginTop = '10px';
+    suggestionDisplay.style.fontSize = '18px';
+    suggestionDisplay.style.lineHeight = '1.5';
+    resultContainer.appendChild(suggestionDisplay);
+
+    // Create Home button
+    const homeBtn = document.createElement('button');
+    homeBtn.innerText = 'Home';
+    homeBtn.className = 'home-btn'; // Add class for styling
+    homeBtn.onclick = () => {
+        location.reload(); // Reload the page to restart the quiz
+    };
+    resultContainer.appendChild(homeBtn);
+    
+    document.body.appendChild(resultContainer);
+}
+
+	</script>
+</body>
+
+</html>

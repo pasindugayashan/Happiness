@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Language Apology Questionnaire</title>
+	<style>
+	@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Sinhala:wght@400;700&display=swap');
+
+	body {
+		font-family: 'Noto Sans Sinhala', sans-serif;
+		/* Apply the font */
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		height: 100vh;
+		background-color: #f5f5f5;
+		/* Light background */
+		margin: 0;
+		text-rendering: optimizeLegibility;
+		/* Improve Sinhala text rendering */
+	}
+
+	.quiz-container {
+		width: 90%;
+		/* Use percentage for responsiveness */
+		max-width: 500px;
+		/* Limit the maximum width */
+		background: #fff;
+		padding: 30px;
+		border-radius: 15px;
+		box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+		/* Soft shadow */
+		text-align: center;
+		transition: transform 0.3s ease;
+		/* Add a hover transition */
+	}
+
+	.quiz-container:hover {
+		transform: translateY(-5px);
+		/* Lift on hover */
+	}
+
+	.progress-bar {
+		width: 100%;
+		background-color: #e9ecef;
+		border-radius: 5px;
+		height: 8px;
+		margin-bottom: 20px;
+		overflow: hidden;
+		/* Hide excess progress */
+	}
+
+	.progress {
+		height: 100%;
+		background-color: #28a745;
+		/* Green progress bar */
+		width: 0%;
+		border-radius: 5px;
+		transition: width 0.3s ease;
+		/* Smooth progress transition */
+	}
+
+	.question-number {
+		font-weight: 600;
+		margin-bottom: 15px;
+		font-size: 1.1rem;
+		color: #343a40;
+		/* Dark gray */
+	}
+
+	.question {
+		font-size: 1.3rem;
+		margin-bottom: 20px;
+		line-height: 1.5;
+		/* Improve readability */
+		color: #212529;
+		/* Darker gray */
+	}
+
+	.options button {
+		display: block;
+		width: 100%;
+		padding: 12px 15px;
+		margin: 8px 0;
+		border: none;
+		border-radius: 8px;
+		background: #f1f5f8;
+		/* Light blue-gray */
+		cursor: pointer;
+		transition: background-color 0.3s ease, transform 0.2s ease;
+		/* Add transitions */
+		font-size: 1rem;
+		color: #495057;
+		/* Grayish-blue */
+	}
+
+	.options button:hover {
+		background-color: #d1e7dd;
+		/* Light green on hover */
+		transform: scale(1.02);
+		/* Slightly enlarge on hover */
+	}
+
+	.options button.selected {
+		background-color: #007bff;
+		/* Blue when selected */
+		color: #fff;
+	}
+
+	.controls {
+		margin-top: 30px;
+	}
+
+	.controls button {
+		padding: 10px 20px;
+		border: none;
+		border-radius: 8px;
+		cursor: pointer;
+		font-size: 1rem;
+		transition: background-color 0.3s ease;
+		/* Add transition */
+	}
+
+	.next-btn {
+		background-color: #28a745;
+		/* Green button */
+		color: #fff;
+	}
+
+	.next-btn:disabled {
+		background-color: #ced4da;
+		/* Light gray when disabled */
+		cursor: not-allowed;
+	}
+
+    .result-container button {
+    padding: 12px 20px; /* Add padding for better appearance */
+    border: none; /* Remove default border */
+    border-radius: 8px; /* Round corners */
+    background-color: #007bff; /* Blue background for results buttons */
+    color: #fff; /* White text color */
+    font-size: 1.1rem; /* Slightly larger font */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transitions */
+    margin: 10px 0; /* Space between buttons */
+}
+
+.result-container button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+    transform: scale(1.02); /* Slightly enlarge on hover */
+}
+
+.result-container button:disabled {
+    background-color: #ccc; /* Gray background for disabled buttons */
+    cursor: not-allowed; /* Not-allowed cursor for disabled buttons */
+}
+
+	.result-container {
+		width: 90%;
+		/* Use percentage for responsiveness */
+		max-width: 500px;
+		/* Limit the maximum width */
+		background: #fff;
+		padding: 30px;
+		border-radius: 15px;
+		box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+		/* Soft shadow */
+		text-align: center;
+		transition: transform 0.3s ease;
+		/* Add a hover transition */
+	}
+
+	.start-btn {
+		padding: 12px 25px;
+		/* Adjust padding for better look */
+		border: none;
+		border-radius: 8px;
+		background-color: #2196F3;
+		color: #fff;
+		font-size: 1.1rem;
+		cursor: pointer;
+		transition: background-color 0.3s ease, transform 0.2s ease;
+		/* Add transitions */
+	}
+
+	.start-btn:hover {
+		background-color: #1976D2;
+		/* Darker blue on hover */
+		transform: scale(1.02);
+		/* Slightly enlarge on hover */
+	}
+
+	.home-btn {
+		display: inline-block;
+		/* Makes it easier to style */
+		padding: 10px 20px;
+		border: none;
+		border-radius: 8px;
+		background-color: #FF9800;
+		color: #fff;
+		font-size: 1rem;
+		cursor: pointer;
+		transition: background-color 0.3s ease, transform 0.2s ease;
+		/* Add transitions */
+		text-decoration: none;
+		/* Remove any underline from the link */
+	}
+
+	.home-btn:hover {
+		background-color: #F57C00;
+		/* Darker orange on hover */
+		transform: scale(1.02);
+		/* Slightly enlarge on hover */
+	}
+
+	/* Media Query for Responsiveness - Adjust as needed */
+	@media (max-width: 500px) {
+		.question {
+			font-size: 1.1rem;
+		}
+
+		.options button {
+			font-size: 0.95rem;
+		}
+	}
+	</style>
+</head>
+
+<body>
+	<div class="quiz-container" id="quizContainer" style="display: none;">
+		<div class="question-number" id="questionNumber">Question 1 of 10</div>
+		<div class="progress-bar">
+			<div class="progress" id="progressBar"></div>
+		</div>
+		<div class="question" id="question">Question text</div>
+		<div class="options" id="options">
+			<!-- Options will be dynamically added here -->
+		</div>
+		<div class="controls">
+			<button class="next-btn" id="nextBtn" disabled>Next</button>
+		</div>
+	</div>
+	<div class="quiz-container" id="startContainer">
+		<button class="start-btn" id="startBtn">Start Quiz</button>
+	</div>
+	<script>
+	const questions = [
+        { text: "යමෙකු ඔබෙන් සමාව ඉල්ලන විට, වඩාත්ම වැදගත් වන්නේ කුමක්ද?", options: ["A. වචන පිටුපස ඇති අවංකභාවය.", "B. ක්රියාව සඳහා වගකීම භාර ගැනීම.", "C. තත්වය ගැන මට හැඟෙන ආකාරය තේරුම් ගැනීම.","D. ක්‍රියාවන් හෝ වන්දි ගෙවීමෙන් එය නිවැරදි කිරීම." ,"E. ඇති වූ වේදනාව හඳුනා ගැනීම සහ ප්රකාශ කිරීම."] },
+        { text: "ඔබ අන් අයගෙන් සමාව ගැනීමට කැමති වන්නේ කෙසේද?", options: ["A. හෘදයාංගම වචන ප්රකාශ කිරීමෙන්.", "B. මගේ වැරැද්ද විවෘතව පිළිගැනීමෙන්.", "C. කිසිවක් පැවසීමට පෙර ඔවුන්ගේ හැඟීම්වලට සවන් දීමෙන්.", "D. ඔවුන් වෙනුවෙන් යමක් කිරීමෙන්.", "E. ඔවුන්ගේ හැඟීම් සඳහා සංවේදනය පෙන්වීමෙන්."] },
+        { text: "යමෙකු ඔබට රිදවූ විට ඔබට වඩාත්ම ප්‍රයෝජනවත් වන්නේ කුමක්ද?", options: ["A. පැහැදිලි සහ අවංක සමාව ඉල්ලීම.", "B. වැරදුන දේ පිලිගැනීමක්.", "C. සිද්ධිය පිළිබඳ මගේ හැඟීම් බෙදා ගැනීමට අවස්ථාවක්.", "D. ඔවුන් දේවල් වඩා හොඳ කිරීමට උත්සාහ කරන බව පෙන්වන ක්‍රියා.", "E. ඔවුන්ගේ ක්රියාවන් මට බලපෑ ආකාරය පිළිබඳ අවබෝධයක්."] },
+        { text: "සමාව ඉල්ලීමක් ලැබීමෙන් පසු ඔබට හැඟෙන්නේ කෙසේද?", options: ["A. මට වලංගු සහ අගය දැනෙනවා.", "B. ඔවුන් ඔවුන්ගේ වැරැද්ද තේරුම් ගෙන ඇති බව මට හැඟේ.", "C. මට ඇහුණා සහ තේරුම් ගත්තා වගේ දැනෙනවා.", "D. ඔවුන් තත්වය නිවැරදි කිරීමට ඉදිරිපත් වුවහොත් මට සහනයක් දැනේ.", "E. මගේ හැඟීම් පිළිගෙන ඇති බව මට හැඟේ."] },
+        { text: "සමාව ඉල්ලීමේ වැදගත්ම කොටස කුමක්දැයි ඔබ සිතන්නේ කුමක්ද?", options: ["A. එය හෘදයාංගම විය යුතුය.", "B. එය වගකීම භාර ගත යුතුය.", "C. එය අනෙක් පුද්ගලයාගේ හැඟීම් සැලකිල්ලට ගත යුතුය.", "D. වැරැද්ද නිවැරදි කිරීමට ක්‍රියා ඇතුළත් විය යුතුය.", "E. එය සිදු වූ හානිය සඳහා සංවේදනය ප්රකාශ කළ යුතුය."] },
+        { text: "සිදු වූ දෙය පැහැදිලි නොකර යමෙකු සමාව ඉල්ලන්නේ නම්, එය ඔබට හැඟෙන්නේ කෙසේද?", options: ["A. එය අසම්පූර්ණ බවක් දැනේ; මට තව විස්තර ඕන.", "B. එය කිසිම දෙයකට වඩා හොඳයි, නමුත් මම පැහැදිලිකමට කැමතියි.", "C. පැහැදිලි කිරීම කුමක් වුවත් සමාව අයැදීම මම අගය කරමි.", "D. මම හිතන්නේ ඒ වෙනුවට ඔවුන් පියවර ගත යුතුයි.", "E. ඔවුන් ඇත්තටම මගේ හැඟීම් තේරුම් නොගන්නා බව මට හැඟේ."] },    
+        { text: "ඔබ සමාව ඉල්ලන විට, ඔබ ප්රමුඛත්වය දෙන්නේ කුමක් ද?", options: ["A. මගේ හැඟීම් ප්‍රකාශ වන බවට වග බලා ගැනීම.", "B. පැහැදිලිවම මගේ වරද පිළිගන්නවා.", "C. මගේ ක්‍රියාවන් ඔවුන්ට බලපෑ ආකාරය අවබෝධ කර ගැනීම.", "D. මගේ වැරැද්ද නිවැරදි කිරීමට පියවර ගැනීම.", "E. මා ඇති කළ වේදනාව පිළිගැනීම."] },  
+        { text: "ඔබට රිදුණු පසු යමෙකු ඔබේ හැඟීම් ඉවත් කළහොත් ඔබේ ප්‍රතිචාරය කුමක්ද?", options: ["A. මට ඊටත් වඩා වේදනාවක් දැනෙන අතර පිළිගැනීමක් අවශ්‍යයි.", "B. ඔවුන් ඔවුන්ගේ ක්රියාවන් ගැන සැලකිල්ලක් නොදක්වන බව මට හැඟේ.", "C. මට මගේ හැඟීම් තවදුරටත් සාකච්ඡා කිරීමට අවශ්‍යයි.", "D. ඒ වෙනුවට තත්වය නිවැරදි කිරීමට මම ඔවුන්ට කැමැත්තෙමි.", "E. එය මට අවලංගු සහ කලකිරීමට පත් කරයි."] },  
+        { text: "සමාව නොගැනීමක් ඔබ දකින්නේ කෙසේද (උදා: 'මට සමාවෙන්න ඔබට එසේ හැඟෙනවා')?", options: ["A. එය සැබෑ සමාවක් නොවේ; එය අවංක බවක් දැනේ.", "B. ඔවුන් වගකීම භාර නොගනී, එය මට කරදර කරයි.", "C. එයින් පෙන්නුම් කරන්නේ ඔවුන් මගේ හැඟීම් තේරුම් නොගන්නා බවයි.", "D. ක්රියාකාරී සැලැස්මක් නොමැතිව එය අර්ථ විරහිත ය.", "E. එය මා නොසලකා හරින ලද සහ අගය නොකළ හැඟීමක් ඇති කරයි."] }, 
+        { text: "සමාව අයැදීමෙන් පසු යමෙකුගෙන් ඔබ දැකීමට කැමති කුමක්ද?", options: ["A. ඔවුන් තම හැඟීම් වඩාත් පැහැදිලිව ප්රකාශ කළ යුතුය.", "B. ඔවුන් වැරැද්දෙන් ඉගෙන ගත් බව පෙන්විය යුතුය.", "C. ඔවුන් මගේ හැඟීම් ගැන කතා කිරීමට මට ඉඩක් ලබා දිය යුතුය.", "D. ඔවුන් ස්පර්ශ කළ හැකි ආකාරයෙන් වන්දි ගෙවිය යුතුය.", "E. ඔවුන් මගේ වේදනාව පිළිබඳ අවබෝධය ප්රකාශ කළ යුතුය."] },     
+    ];
+
+	let currentQuestionIndex = 0;
+    const answers = { WordofApology: 0, Accountability: 0, Understanding: 0, Repairing: 0, ExpressingRegret: 0 };
+const questionEl = document.getElementById('question');
+const optionsEl = document.getElementById('options');
+const nextBtn = document.getElementById('nextBtn');
+const questionNumberEl = document.getElementById('questionNumber');
+const progressBar = document.getElementById('progressBar');
+const quizContainer = document.getElementById('quizContainer');
+const startContainer = document.getElementById('startContainer');
+
+document.getElementById('startBtn').onclick = () => {
+    startContainer.style.display = 'none';
+    quizContainer.style.display = 'block';
+    loadQuestion();
+};
+
+function loadQuestion() {
+    const question = questions[currentQuestionIndex];
+    questionEl.innerText = question.text;
+    optionsEl.innerHTML = '';
+    questionNumberEl.innerText = `Question ${currentQuestionIndex + 1} of ${questions.length}`;
+    progressBar.style.width = `${((currentQuestionIndex + 1) / questions.length) * 100}%`;
+    nextBtn.disabled = true;
+
+    question.options.forEach((option, index) => {
+        const button = document.createElement('button');
+        button.innerText = option;
+        button.onclick = () => selectAnswer(index, button);
+        optionsEl.appendChild(button);
+    });
+}
+
+function selectAnswer(optionIndex, button) {
+    Array.from(optionsEl.children).forEach(btn => btn.classList.remove('selected'));
+    button.classList.add('selected');
+    nextBtn.disabled = false;
+ // Scoring Logic
+ switch (currentQuestionIndex) {
+            case 0: // Question 1
+                if (optionIndex === 0) { // A
+                    answers.WordofApology++;
+                } else if(optionIndex === 1) { // B
+                    answers.Accountability++;                     
+                }
+                else if(optionIndex === 2) { // C
+                    answers.Understanding++;                     
+                }
+                else if(optionIndex === 3) { // D
+                    answers.Repairing++;
+                }else if(optionIndex === 4) { // E
+                    answers.ExpressingRegret++;
+                }
+                break;
+            case 1: // Question 2
+                if (optionIndex === 0) { // A
+                    answers.WordofApology++;
+                } else if(optionIndex === 1) { // B
+                    answers.Accountability++;                     
+                }
+                else if(optionIndex === 2) { // C
+                    answers.Understanding++;                     
+                }
+                else if(optionIndex === 3) { // D
+                    answers.Repairing++;
+                }else if(optionIndex === 4) { // E
+                    answers.ExpressingRegret++;
+                }
+                break;
+            case 2: // Question 3
+                if (optionIndex === 0) { // A
+                    answers.WordofApology++;
+                } else if(optionIndex === 1) { // B
+                    answers.Accountability++;                     
+                }
+                else if(optionIndex === 2) { // C
+                    answers.Understanding++;                     
+                }
+                else if(optionIndex === 3) { // D
+                    answers.Repairing++;
+                }else if(optionIndex === 4) { // E
+                    answers.ExpressingRegret++;
+                }
+                break;
+            case 3: // Question 4
+                if (optionIndex === 0) { // A
+                    answers.WordofApology++;
+                } else if(optionIndex === 1) { // B
+                    answers.Accountability++;                     
+                }
+                else if(optionIndex === 2) { // C
+                    answers.Understanding++;                     
+                }
+                else if(optionIndex === 3) { // D
+                    answers.Repairing++;
+                }else if(optionIndex === 4) { // E
+                    answers.ExpressingRegret++;
+                }
+                break;
+            case 4: // Question 5
+                if (optionIndex === 0) { // A
+                    answers.WordofApology++;
+                } else if(optionIndex === 1) { // B
+                    answers.Accountability++;                     
+                }
+                else if(optionIndex === 2) { // C
+                    answers.Understanding++;                     
+                }
+                else if(optionIndex === 3) { // D
+                    answers.Repairing++;
+                }else if(optionIndex === 4) { // E
+                    answers.ExpressingRegret++;
+                }
+                break;
+            case 5: // Question 6
+                if (optionIndex === 0) { // A
+                    answers.WordofApology++;
+                } else if(optionIndex === 1) { // B
+                    answers.Accountability++;                     
+                }
+                else if(optionIndex === 2) { // C
+                    answers.Understanding++;                     
+                }
+                else if(optionIndex === 3) { // D
+                    answers.Repairing++;
+                }else if(optionIndex === 4) { // E
+                    answers.ExpressingRegret++;
+                }
+                break;
+            case 6: // Question 7
+                if (optionIndex === 0) { // A
+                    answers.WordofApology++;
+                } else if(optionIndex === 1) { // B
+                    answers.Accountability++;                     
+                }
+                else if(optionIndex === 2) { // C
+                    answers.Understanding++;                     
+                }
+                else if(optionIndex === 3) { // D
+                    answers.Repairing++;
+                }else if(optionIndex === 4) { // E
+                    answers.ExpressingRegret++;
+                }
+                break;
+            case 7: // Question 8
+                if (optionIndex === 0) { // A
+                    answers.WordofApology++;
+                } else if(optionIndex === 1) { // B
+                    answers.Accountability++;                     
+                }
+                else if(optionIndex === 2) { // C
+                    answers.Understanding++;                     
+                }
+                else if(optionIndex === 3) { // D
+                    answers.Repairing++;
+                }else if(optionIndex === 4) { // E
+                    answers.ExpressingRegret++;
+                }
+                break;
+            case 8: // Question 9
+                if (optionIndex === 0) { // A
+                    answers.WordofApology++;
+                } else if(optionIndex === 1) { // B
+                    answers.Accountability++;                     
+                }
+                else if(optionIndex === 2) { // C
+                    answers.Understanding++;                     
+                }
+                else if(optionIndex === 3) { // D
+                    answers.Repairing++;
+                }else if(optionIndex === 4) { // E
+                    answers.ExpressingRegret++;
+                }
+                break;
+            case 9: // Question 10
+                if (optionIndex === 0) { // A
+                    answers.WordofApology++;
+                } else if(optionIndex === 1) { // B
+                    answers.Accountability++;                     
+                }
+                else if(optionIndex === 2) { // C
+                    answers.Understanding++;                     
+                }
+                else if(optionIndex === 3) { // D
+                    answers.Repairing++;
+                }else if(optionIndex === 4) { // E
+                    answers.ExpressingRegret++;
+                }
+                break;
+        }
+    }
+
+
+nextBtn.onclick = () => {
+    currentQuestionIndex++;
+    if (currentQuestionIndex < questions.length) {
+        loadQuestion();
+    } else {
+        showResults();
+    }
+};
+
+function showResults() {
+    const maxQuestionCount = 10;
+
+    // Calculate percentages
+    const results = {
+        WordofApology: (answers.WordofApology / maxQuestionCount * 100).toFixed(2),
+        Accountability: (answers.Accountability / maxQuestionCount * 100).toFixed(2),
+        Understanding: (answers.Understanding / maxQuestionCount * 100).toFixed(2),
+        Repairing: (answers.Repairing / maxQuestionCount * 100).toFixed(2),
+        ExpressingRegret: (answers.ExpressingRegret / maxQuestionCount * 100).toFixed(2),
+    };
+
+    // Sort results by percentage in descending order
+    const sortedResults = Object.entries(results).sort((a, b) => b[1] - a[1]);
+
+    const resultContainer = document.createElement('div');
+    resultContainer.className = 'result-container';
+
+    // Clear the body and create the title
+    document.body.innerHTML = '';
+    const title = document.createElement('h2');
+    title.innerText = 'Click 1 st Botton to see solutions';
+    resultContainer.appendChild(title); // Add the title to the result container
+
+    sortedResults.forEach(([language, percentage], index) => {
+        const resultButton = document.createElement('button');
+        resultButton.innerText = `${language}: ${percentage}%`;
+        resultButton.style.width = '100%';
+        resultButton.style.margin = '5px 0';
+
+        // Make only the first button clickable and assign respective pages
+        if (index === 0) {
+            resultButton.onclick = () => window.location.href = `${language.toLowerCase().replace(/ /g, '-')}.html`; // Link to the detailed page
+            resultButton.style.cursor = 'pointer'; // Change cursor to pointer for clickable button
+        } else {
+            resultButton.disabled = true; // Disable other buttons
+            resultButton.style.backgroundColor = '#ccc'; // Change background color to indicate disabled state
+            resultButton.style.cursor = 'not-allowed'; // Change cursor to not-allowed for disabled buttons
+        }
+
+        resultContainer.appendChild(resultButton);
+    });
+
+    document.body.appendChild(resultContainer);
+}
+
+	</script>
+</body>
+
+</html>

@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Narcissistic Personality Quiz</title>
+	<style>
+	@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Sinhala:wght@400;700&display=swap');
+
+	body {
+		font-family: 'Noto Sans Sinhala', sans-serif;
+		/* Apply the font */
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		height: 100vh;
+		background-color: #f5f5f5;
+		/* Light background */
+		margin: 0;
+		text-rendering: optimizeLegibility;
+		/* Improve Sinhala text rendering */
+	}
+
+	.quiz-container {
+		width: 90%;
+		/* Use percentage for responsiveness */
+		max-width: 500px;
+		/* Limit the maximum width */
+		background: #fff;
+		padding: 30px;
+		border-radius: 15px;
+		box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+		/* Soft shadow */
+		text-align: center;
+		transition: transform 0.3s ease;
+		/* Add a hover transition */
+	}
+
+	.quiz-container:hover {
+		transform: translateY(-5px);
+		/* Lift on hover */
+	}
+
+	.progress-bar {
+		width: 100%;
+		background-color: #e9ecef;
+		border-radius: 5px;
+		height: 8px;
+		margin-bottom: 20px;
+		overflow: hidden;
+		/* Hide excess progress */
+	}
+
+	.progress {
+		height: 100%;
+		background-color: #28a745;
+		/* Green progress bar */
+		width: 0%;
+		border-radius: 5px;
+		transition: width 0.3s ease;
+		/* Smooth progress transition */
+	}
+
+	.question-number {
+		font-weight: 600;
+		margin-bottom: 15px;
+		font-size: 1.1rem;
+		color: #343a40;
+		/* Dark gray */
+	}
+
+	.question {
+		font-size: 1.3rem;
+		margin-bottom: 20px;
+		line-height: 1.5;
+		/* Improve readability */
+		color: #212529;
+		/* Darker gray */
+	}
+
+	.options button {
+		display: block;
+		width: 100%;
+		padding: 12px 15px;
+		margin: 8px 0;
+		border: none;
+		border-radius: 8px;
+		background: #f1f5f8;
+		/* Light blue-gray */
+		cursor: pointer;
+		transition: background-color 0.3s ease, transform 0.2s ease;
+		/* Add transitions */
+		font-size: 1rem;
+		color: #495057;
+		/* Grayish-blue */
+	}
+
+	.options button:hover {
+		background-color: #d1e7dd;
+		/* Light green on hover */
+		transform: scale(1.02);
+		/* Slightly enlarge on hover */
+	}
+
+	.options button.selected {
+		background-color: #007bff;
+		/* Blue when selected */
+		color: #fff;
+	}
+
+	.controls {
+		margin-top: 30px;
+	}
+
+	.controls button {
+		padding: 10px 20px;
+		border: none;
+		border-radius: 8px;
+		cursor: pointer;
+		font-size: 1rem;
+		transition: background-color 0.3s ease;
+		/* Add transition */
+	}
+
+	.next-btn {
+		background-color: #28a745;
+		/* Green button */
+		color: #fff;
+	}
+
+	.next-btn:disabled {
+		background-color: #ced4da;
+		/* Light gray when disabled */
+		cursor: not-allowed;
+	}
+
+	.result-container {
+		width: 90%;
+		/* Use percentage for responsiveness */
+		max-width: 500px;
+		/* Limit the maximum width */
+		background: #fff;
+		padding: 30px;
+		border-radius: 15px;
+		box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+		/* Soft shadow */
+		text-align: center;
+		transition: transform 0.3s ease;
+		/* Add a hover transition */
+	}
+
+	.start-btn {
+		padding: 12px 25px;
+		/* Adjust padding for better look */
+		border: none;
+		border-radius: 8px;
+		background-color: #2196F3;
+		color: #fff;
+		font-size: 1.1rem;
+		cursor: pointer;
+		transition: background-color 0.3s ease, transform 0.2s ease;
+		/* Add transitions */
+	}
+
+	.start-btn:hover {
+		background-color: #1976D2;
+		/* Darker blue on hover */
+		transform: scale(1.02);
+		/* Slightly enlarge on hover */
+	}
+
+	.home-btn {
+		display: inline-block;
+		/* Makes it easier to style */
+		padding: 10px 20px;
+		border: none;
+		border-radius: 8px;
+		background-color: #FF9800;
+		color: #fff;
+		font-size: 1rem;
+		cursor: pointer;
+		transition: background-color 0.3s ease, transform 0.2s ease;
+		/* Add transitions */
+		text-decoration: none;
+		/* Remove any underline from the link */
+	}
+
+	.home-btn:hover {
+		background-color: #F57C00;
+		/* Darker orange on hover */
+		transform: scale(1.02);
+		/* Slightly enlarge on hover */
+	}
+
+	/* Media Query for Responsiveness - Adjust as needed */
+	@media (max-width: 500px) {
+		.question {
+			font-size: 1.1rem;
+		}
+
+		.options button {
+			font-size: 0.95rem;
+		}
+	}
+	</style>
+</head>
+
+<body>
+	<div class="quiz-container" id="quizContainer" style="display: none;">
+		<div class="question-number" id="questionNumber">Question 1 of 10</div>
+		<div class="progress-bar">
+			<div class="progress" id="progressBar"></div>
+		</div>
+		<div class="question" id="question">Question text</div>
+		<div class="options" id="options">
+			<!-- Options will be dynamically added here -->
+		</div>
+		<div class="controls">
+			<button class="next-btn" id="nextBtn" disabled>Next</button>
+		</div>
+	</div>
+	<div class="quiz-container" id="startContainer">
+		<button class="start-btn" id="startBtn">Start Quiz</button>
+	</div>
+	<script>
+	const questions = [{
+		text: "ඔබ කොපමණ වාරයක් අන් අයගෙන් ප්‍රශංසාව ලබා ගන්නවාද?",
+		options: ["A. කලාතුරකින්", "B. ඉඳහිට", "C. බොහෝ විට", "D. සෑම විටම පාහේ"]
+	}, {
+		text: "ඔබ බොහෝ විට ඔබ අන් අයට වඩා විශේෂ හෝ අද්විතීය යැයි විශ්වාස කරනවාද?",
+		options: ["A. කොහෙත්ම නැහැ", "B. සමහර විට", "C. නිතර", "D. සෑම විටම"]
+	}, {
+		text: "ඔබේ ජයග්‍රහණ සඳහා ඔබව හඳුනා ගැනීම කොතරම් වැදගත්ද?",
+		options: ["A. වැදගත් නොවේ", "B. තරමක් වැදගත්", "C. ඉතා වැදගත්", "D. ඉතාම වැදගත්"]
+	}, {
+		text: "අන් අයගෙන් විශේෂ සැලකිලි ලැබීමට ඔබට අයිතියක් තිබේද?",
+		options: ["A. කවදාවත්", "B. ඉඳහිට", "C. බොහෝ විට", "D. සෑම විටම"]
+	}, {
+		text: "බලය, සාර්ථකත්වය හෝ ආකර්ෂණය ගැන ඔබ කොපමණ වාරයක් මනඃකල්පිත කරනවාද?",
+		options: ["A. කලාතුරකින්", "B. සමහර විට", "C. නිතර", "D. බොහෝ විට"]
+	}, {
+		text: "විවේචනය කරන විට, ඔබ සාමාන්යයෙන් ප්රතික්රියා කරන්නේ කෙසේද?",
+		options: ["A. මම එය නිර්මාණාත්මකව ගන්නවා", "B. මට ආරක්ෂිත බවක් දැනෙන නමුත් සවන් දීමට උත්සාහ කරන්න", "C. මම කලබල වෙනවා හෝ කෝපයට පත් වෙනවා", "D. මට අපහාසයක් හෝ කෝපයක් දැනේ"]
+	}, {
+		text: "ඔබ ඔබේ ජයග්‍රහණ ගැන අන් අය සමඟ නිතර කතා කරනවාද?",
+		options: ["A. කලාතුරකින්", "B. ඉඳහිට", "C. බොහෝ විට", "D. සෑම විටම පාහේ"]
+	}, {
+		text: "අන් අයගේ අවශ්‍යතා ගැන ඔබට හැඟෙන්නේ කෙසේද?",
+		options: ["A. මම අවංකවම සැලකිලිමත් වන අතර උදව් කිරීමට උත්සාහ කරමි", "B. මම සැලකිලිමත් නමුත් පළමුව මගේ අවශ්‍යතා කෙරෙහි අවධානය යොමු කරමි", "C. එය මට බලපාන්නේ නම් මිස මට උදාසීන බවක් දැනේ", "D. මගේ අවශ්‍යතා වඩා වැදගත් යැයි මම විශ්වාස කරමි"]
+	}, {
+		text: "ඔබට අවශ්‍ය දේ ලබා ගැනීම සඳහා අන් අයව හැසිරවීමට හෝ පාලනය කිරීමට ඔබට නැඹුරුවක් තිබේද?",
+		options: ["A. කවදාවත්", "B. මකලාතුරකින්", "C. සමහර විට", "D. නිතර"]
+	}, {
+		text: "අන් අය කෙරෙහි සංවේදනය ගැන ඔබට හැඟෙන්නේ කෙසේද?",
+		options: ["A. මම අන් අයගේ හැඟීම් සමඟ ගැඹුරින් සංවේදනය කරමි", "B. මම සංවේදනය කරන නමුත් මා ගැනම අවධානය යොමු කරමි", "C. එය මට ප්‍රයෝජනවත් වන්නේ නම් මිස මම සංවේදනය කරන්නේ කලාතුරකිනි", "D. මට සංවේදනය කිරීම අපහසුයි"]
+	}, ];
+	let currentQuestionIndex = 0;
+	let TotalMarks = 0;
+	const questionEl = document.getElementById('question');
+	const optionsEl = document.getElementById('options');
+	const nextBtn = document.getElementById('nextBtn');
+	const questionNumberEl = document.getElementById('questionNumber');
+	const progressBar = document.getElementById('progressBar');
+	const quizContainer = document.getElementById('quizContainer');
+	const startContainer = document.getElementById('startContainer');
+	document.getElementById('startBtn').onclick = () => {
+		startContainer.style.display = 'none';
+		quizContainer.style.display = 'block';
+		loadQuestion();
+	};
+
+	function loadQuestion() {
+		const question = questions[currentQuestionIndex];
+		questionEl.innerText = question.text;
+		optionsEl.innerHTML = '';
+		questionNumberEl.innerText = `Question ${currentQuestionIndex + 1} of ${questions.length}`;
+		progressBar.style.width = `${((currentQuestionIndex + 1) / questions.length) * 100}%`;
+		nextBtn.disabled = true;
+		question.options.forEach((option, index) => {
+			const button = document.createElement('button');
+			button.innerText = option;
+			button.onclick = () => selectAnswer(index, button);
+			optionsEl.appendChild(button);
+		});
+	}
+
+	function selectAnswer(optionIndex, button) {
+        Array.from(optionsEl.children).forEach(btn => btn.classList.remove('selected'));
+        button.classList.add('selected');
+        nextBtn.disabled = false;
+
+        // Scoring Logic
+        switch (currentQuestionIndex) {
+            case 0: // Question 1
+                if (optionIndex === 0) { // A
+                    TotalMarks++
+                } else if(optionIndex === 1) { // B
+                    TotalMarks+=2
+                } else if(optionIndex === 2) { // C
+                    TotalMarks+=3
+                } else if(optionIndex === 3) { // D
+                    TotalMarks+=4
+                }
+                break;
+            case 1: // Question 2
+                if (optionIndex === 0) { // A
+                    TotalMarks++
+                } else if(optionIndex === 1) { // B
+                    TotalMarks+=2
+                } else if(optionIndex === 2) { // C
+                    TotalMarks+=3
+                } else if(optionIndex === 3) { // D
+                    TotalMarks+=4
+                }
+                break;
+            case 2: // Question 3
+                if (optionIndex === 0) { // A
+                    TotalMarks++
+                } else if(optionIndex === 1) { // B
+                    TotalMarks+=2
+                } else if(optionIndex === 2) { // C
+                    TotalMarks+=3
+                } else if(optionIndex === 3) { // D
+                    TotalMarks+=4
+                }
+                break;
+            case 3: // Question 4
+                if (optionIndex === 0) { // A
+                    TotalMarks++
+                } else if(optionIndex === 1) { // B
+                    TotalMarks+=2
+                } else if(optionIndex === 2) { // C
+                    TotalMarks+=3
+                } else if(optionIndex === 3) { // D
+                    TotalMarks+=4
+                }
+                break;
+            case 4: // Question 5
+                if (optionIndex === 0) { // A
+                    TotalMarks++
+                } else if(optionIndex === 1) { // B
+                    TotalMarks+=2
+                } else if(optionIndex === 2) { // C
+                    TotalMarks+=3
+                } else if(optionIndex === 3) { // D
+                    TotalMarks+=4
+                }
+                break;
+            case 5: // Question 6
+                if (optionIndex === 0) { // A
+                    TotalMarks++
+                } else if(optionIndex === 1) { // B
+                    TotalMarks+=2
+                } else if(optionIndex === 2) { // C
+                    TotalMarks+=3
+                } else if(optionIndex === 3) { // D
+                    TotalMarks+=4
+                }
+                break;
+            case 6: // Question 7
+                if (optionIndex === 0) { // A
+                    TotalMarks++
+                } else if(optionIndex === 1) { // B
+                    TotalMarks+=2
+                } else if(optionIndex === 2) { // C
+                    TotalMarks+=3
+                } else if(optionIndex === 3) { // D
+                    TotalMarks+=4
+                }
+                break;
+            case 7: // Question 8
+                if (optionIndex === 0) { // A
+                    TotalMarks++
+                } else if(optionIndex === 1) { // B
+                    TotalMarks+=2
+                } else if(optionIndex === 2) { // C
+                    TotalMarks+=3
+                } else if(optionIndex === 3) { // D
+                    TotalMarks+=4
+                }
+                break;
+            case 8: // Question 9
+                if (optionIndex === 0) { // A
+                    TotalMarks++
+                } else if(optionIndex === 1) { // B
+                    TotalMarks+=2
+                } else if(optionIndex === 2) { // C
+                    TotalMarks+=3
+                } else if(optionIndex === 3) { // D
+                    TotalMarks+=4
+                }
+                break;
+            case 9: // Question 10
+                if (optionIndex === 0) { // A
+                    TotalMarks++
+                } else if(optionIndex === 1) { // B
+                    TotalMarks+=2
+                } else if(optionIndex === 2) { // C
+                    TotalMarks+=3
+                } else if(optionIndex === 3) { // D
+                    TotalMarks+=4
+                }
+                break;
+        }
+    }
+	
+	nextBtn.onclick = () => {
+		const selectedOption = optionsEl.querySelector('button.selected');
+		if(selectedOption) {
+			TotalMarks += (selectedOption.innerText.charAt(0) === 'D') ? 1 : 0; // Assuming 'D' is the correct answer
+		}
+		currentQuestionIndex++;
+		if(currentQuestionIndex < questions.length) {
+			loadQuestion();
+		} else {
+			showResults();
+		}
+	};
+
+	function showResults() {
+		const resultContainer = document.createElement('div');
+		resultContainer.className = 'result-container';
+		document.body.innerHTML = ''; // Clear previous content
+		let grade, description;
+		if(TotalMarks >= 36) {
+			grade = 'A';
+			description = 'ඔබට සබඳතාවලට සහ අන් අය කෙරෙහි ඔබේ ඉදිරිදර්ශනයට බලපෑම් කළ හැකි ඉහළ මට්ටමේ නාසිවාදී ප්‍රවණතා තිබිය හැකිය.';
+		} else if(TotalMarks >= 26) {
+			grade = 'B';
+			description = 'ඔබ ප්‍රශංසාව සෙවීම සහ අන් අයට වඩා ඔබේ අවශ්‍යතා කෙරෙහි අවධානය යොමු කිරීම වැනි බොහෝ නාසිවාදී ගති ලක්ෂණ ප්‍රදර්ශනය කරයි.';
+		} else if(TotalMarks >= 16) {
+			grade = 'C';
+			description = 'ඔබට සමහර නාරිසිවාදී ලක්ෂණ තිබිය හැකි නමුත් සාමාන්‍යයෙන් ඒවා සංවේදනය සහ ස්වයං දැනුවත්භාවය සමඟ සමතුලිත කිරීමට හැකි වේ.';
+		} else {
+			grade = 'D';
+			description = 'ඔබට සාමාන්‍යයෙන් පහත් මට්ටමේ නාසිසිස්ටික් ගති ලක්ෂණ ඇති අතර අන් අය කෙරෙහි සංවේදී සහ අවධානය යොමු කරයි.';
+		}
+		const gradeDisplay = document.createElement('div');
+		gradeDisplay.innerText = `Your Grade: ${grade}`; // Fixed string interpolation
+		gradeDisplay.style.fontSize = '24px';
+		gradeDisplay.style.fontWeight = 'bold';
+		gradeDisplay.style.marginBottom = '10px';
+		gradeDisplay.style.color = grade === 'A' ? '#4CAF50' : grade === 'B' ? '#2196F3' : grade === 'C' ? '#FF9800' : '#F44336';
+		resultContainer.appendChild(gradeDisplay);
+		const descriptionDisplay = document.createElement('div');
+		descriptionDisplay.innerText = description;
+		descriptionDisplay.style.marginTop = '10px';
+		descriptionDisplay.style.fontSize = '18px';
+		descriptionDisplay.style.lineHeight = '1.5';
+		resultContainer.appendChild(descriptionDisplay);
+		// Create Home button
+		const homeBtn = document.createElement('button');
+		homeBtn.innerText = 'Home';
+		homeBtn.className = 'home-btn'; // Add class for styling
+		homeBtn.onclick = () => {
+			location.reload(); // Reload the page to restart the quiz
+		};
+		resultContainer.appendChild(homeBtn);
+		document.body.appendChild(resultContainer);
+	}
+	</script>
+</body>
+
+</html>

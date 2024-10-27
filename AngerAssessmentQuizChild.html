@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Anger Assessment Quiz</title>
+	<style>
+	@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Sinhala:wght@400;700&display=swap');
+
+	body {
+		font-family: 'Noto Sans Sinhala', sans-serif;
+		/* Apply the font */
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		height: 100vh;
+		background-color: #f5f5f5;
+		/* Light background */
+		margin: 0;
+		text-rendering: optimizeLegibility;
+		/* Improve Sinhala text rendering */
+	}
+
+	.quiz-container {
+		width: 90%;
+		/* Use percentage for responsiveness */
+		max-width: 500px;
+		/* Limit the maximum width */
+		background: #fff;
+		padding: 30px;
+		border-radius: 15px;
+		box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+		/* Soft shadow */
+		text-align: center;
+		transition: transform 0.3s ease;
+		/* Add a hover transition */
+	}
+
+	.quiz-container:hover {
+		transform: translateY(-5px);
+		/* Lift on hover */
+	}
+
+	.progress-bar {
+		width: 100%;
+		background-color: #e9ecef;
+		border-radius: 5px;
+		height: 8px;
+		margin-bottom: 20px;
+		overflow: hidden;
+		/* Hide excess progress */
+	}
+
+	.progress {
+		height: 100%;
+		background-color: #28a745;
+		/* Green progress bar */
+		width: 0%;
+		border-radius: 5px;
+		transition: width 0.3s ease;
+		/* Smooth progress transition */
+	}
+
+	.question-number {
+		font-weight: 600;
+		margin-bottom: 15px;
+		font-size: 1.1rem;
+		color: #343a40;
+		/* Dark gray */
+	}
+
+	.question {
+		font-size: 1.3rem;
+		margin-bottom: 20px;
+		line-height: 1.5;
+		/* Improve readability */
+		color: #212529;
+		/* Darker gray */
+	}
+
+	.options button {
+		display: block;
+		width: 100%;
+		padding: 12px 15px;
+		margin: 8px 0;
+		border: none;
+		border-radius: 8px;
+		background: #f1f5f8;
+		/* Light blue-gray */
+		cursor: pointer;
+		transition: background-color 0.3s ease, transform 0.2s ease;
+		/* Add transitions */
+		font-size: 1rem;
+		color: #495057;
+		/* Grayish-blue */
+	}
+
+	.options button:hover {
+		background-color: #d1e7dd;
+		/* Light green on hover */
+		transform: scale(1.02);
+		/* Slightly enlarge on hover */
+	}
+
+	.options button.selected {
+		background-color: #007bff;
+		/* Blue when selected */
+		color: #fff;
+	}
+
+	.controls {
+		margin-top: 30px;
+	}
+
+	.controls button {
+		padding: 10px 20px;
+		border: none;
+		border-radius: 8px;
+		cursor: pointer;
+		font-size: 1rem;
+		transition: background-color 0.3s ease;
+		/* Add transition */
+	}
+
+	.next-btn {
+		background-color: #28a745;
+		/* Green button */
+		color: #fff;
+	}
+
+	.next-btn:disabled {
+		background-color: #ced4da;
+		/* Light gray when disabled */
+		cursor: not-allowed;
+	}
+
+	.result-container {
+		width: 90%;
+		/* Use percentage for responsiveness */
+		max-width: 500px;
+		/* Limit the maximum width */
+		background: #fff;
+		padding: 30px;
+		border-radius: 15px;
+		box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+		/* Soft shadow */
+		text-align: center;
+		transition: transform 0.3s ease;
+		/* Add a hover transition */
+	}
+
+	.start-btn {
+		padding: 12px 25px;
+		/* Adjust padding for better look */
+		border: none;
+		border-radius: 8px;
+		background-color: #2196F3;
+		color: #fff;
+		font-size: 1.1rem;
+		cursor: pointer;
+		transition: background-color 0.3s ease, transform 0.2s ease;
+		/* Add transitions */
+	}
+
+	.start-btn:hover {
+		background-color: #1976D2;
+		/* Darker blue on hover */
+		transform: scale(1.02);
+		/* Slightly enlarge on hover */
+	}
+
+	.home-btn {
+		display: inline-block;
+		/* Makes it easier to style */
+		padding: 10px 20px;
+		border: none;
+		border-radius: 8px;
+		background-color: #FF9800;
+		color: #fff;
+		font-size: 1rem;
+		cursor: pointer;
+		transition: background-color 0.3s ease, transform 0.2s ease;
+		/* Add transitions */
+		text-decoration: none;
+		/* Remove any underline from the link */
+	}
+
+	.home-btn:hover {
+		background-color: #F57C00;
+		/* Darker orange on hover */
+		transform: scale(1.02);
+		/* Slightly enlarge on hover */
+	}
+
+	/* Media Query for Responsiveness - Adjust as needed */
+	@media (max-width: 500px) {
+		.question {
+			font-size: 1.1rem;
+		}
+
+		.options button {
+			font-size: 0.95rem;
+		}
+	}
+	</style>
+</head>
+
+<body>
+	<div class="quiz-container" id="quizContainer" style="display: none;">
+		<div class="question-number" id="questionNumber">Question 1 of 10</div>
+		<div class="progress-bar">
+			<div class="progress" id="progressBar"></div>
+		</div>
+		<div class="question" id="question">Question text</div>
+		<div class="options" id="options">
+			<!-- Options will be dynamically added here -->
+		</div>
+		<div class="controls">
+			<button class="next-btn" id="nextBtn" disabled>Next</button>
+		</div>
+	</div>
+	<div class="quiz-container" id="startContainer">
+		<button class="start-btn" id="startBtn">Start Quiz</button>
+	</div>
+	<script>
+    const questions = [
+        { text: "ඔබට කොපමණ වාරයක් කෝපයක් දැනෙනවාද?", options: ["A. කලාතුරකින්", "B. සමහර විට", "C. බොහෝ විට", "D. සෑම විටම පාහේ"] },
+        { text: "ඔබ කෝපයට පත් වූ විට, ඔබ සාමාන්යයෙන් එය ප්රකාශ කරන්නේ කෙසේද?", options: ["A. මම එය මා තුළ තබා ගන්නෙමි", "B. මම එය සන්සුන්ව ප්රකාශ කරමි", "C. මම මගේ හඬ නඟා හෝ ආක්‍රමණශීලී වන්නෙමි", "D. මම වාචිකව හෝ ශාරීරිකව පහර දෙනවා"] },
+        { text: "ඔබේ කෝපය ප්‍රකාශ කිරීමෙන් පසු ඔබට හැඟෙන්නේ කෙසේද?", options: ["A. සහන සහ වඩා හොඳ", "B. උදාසීන; එය මට කරදර කරන්නේ නැත", "C. වරදකරු හෝ පසුතැවිලි වීම", "D. ලැජ්ජාව හෝ ලැජ්ජාව"] },
+        { text: "ගමනාගමනයේදී යමෙකු ඔබව කපා දැමූ විට ඔබ ප්‍රතිචාරය දක්වන්නේ කෙසේද?", options: ["A. මම සන්සුන්ව සිටිමි, එයට යන්න දෙන්න", "B. මට තරහක් දැනෙනවා නමුත් ප්‍රතිචාර දක්වන්නේ නැහැ", "C. මම ඔවුන්ට හෝන් හෝ කෑගසමි", "D. මම ආක්‍රමණශීලී රිය පැදවීමේ හැසිරීම් වල නිරත වෙමි"] },
+        { text: "ඔබ කෝපයට පත් වූ විට, ඔබට සාමාන්‍යයෙන් ඇති සිතුවිලි මොනවාද?", options: ["A. මම තත්වය තේරුම් ගැනීමට උත්සාහ කරමි", "B. මගේ කෝපය සාධාරණයි කියා මට හැඟේ", "C. පුද්ගලයා/තත්ත්වය ගැන මා අකමැති සියලු දේ ගැන මම සිතමි", "D. මම පළිගැනීම ගැන මනඃකල්පිත කරමි"] },
+        { text: "මිතුරන් හෝ පවුලේ අය සමඟ ගැටුම් ඔබ හසුරුවන්නේ කෙසේද?", options: ["A. මම ගැටුමෙන් සම්පූර්ණයෙන්ම වැළකී සිටිමි", "B. මම මගේ හැඟීම් සන්සුන්ව සාකච්ඡා කරමි", "C. මම ආරක්ෂාකාරී හෝ තර්ක කරන්නෙමි", "D. මම කෝපයෙන් පිපිරෙමි"] },
+        { text: "ඔබේ කෝපය ඔබේ සබඳතාවලට බලපාන්නේ කෙසේද?", options: ["A. එය බලපෑමක් නැත", "B. සමහර විට එය ආතතිය ඇති කරයි", "C. එය බොහෝ විට ගැටුම් වලට තුඩු දෙයි", "D. එය මගේ සබඳතාවලට දැඩි ලෙස හානි කරයි"] },
+        { text: "අන් අය ඔබ කෙරෙහි කෝපය ප්‍රකාශ කරන විට ඔබට හැඟෙන්නේ කෙසේද?", options: ["A. මම සන්සුන්ව සිටිමි, සවන් දෙමි", "B. මට අපහසුතාවයක් දැනෙන නමුත් තේරුම් ගැනීමට උත්සාහ කරන්න", "C. මම ආරක්ෂිත වෙනවා", "D. මට තර්ජනයක් සහ පළිගැනීමක් දැනෙනවා"] },
+        { text: "කෝප වූ විට ඔබ අත්විඳින ශාරීරික රෝග ලක්ෂණ මොනවාද?", options: ["A. කිසිවක් නැත", "B. මෘදු ආතතිය හෝ අපහසුතාව", "C. හෘද ස්පන්දන වේගය හෝ දහඩිය වැඩි වීම", "D. මට පාලනයෙන් තොර බවක් හෝ ශාරීරික පිපිරීම් ඇති බවක් දැනේ"] },
+        { text: "කෝපය පාලනය කිරීමට ඔබට ඇති හැකියාව ගැන ඔබට හැඟෙන්නේ කෙසේද?", options: ["A. මට විශ්වාසයක් සහ පාලනයක් දැනෙනවා", "B. මට යම් නිපුණතා ඇති නමුත් වැඩිදියුණු කළ හැකිය", "C. මම එය කළමනාකරණය කිරීමට අරගල කරමි", "D. මගේ කෝපයෙන් මම සම්පූර්ණයෙන්ම යටපත් වී ඇති බවක් දැනේ"] },
+    ];
+
+	let currentQuestionIndex = 0;
+	let TotalMarks = 0;
+	const questionEl = document.getElementById('question');
+	const optionsEl = document.getElementById('options');
+	const nextBtn = document.getElementById('nextBtn');
+	const questionNumberEl = document.getElementById('questionNumber');
+	const progressBar = document.getElementById('progressBar');
+	const quizContainer = document.getElementById('quizContainer');
+	const startContainer = document.getElementById('startContainer');
+	document.getElementById('startBtn').onclick = () => {
+		startContainer.style.display = 'none';
+		quizContainer.style.display = 'block';
+		loadQuestion();
+	};
+
+	function loadQuestion() {
+		const question = questions[currentQuestionIndex];
+		questionEl.innerText = question.text;
+		optionsEl.innerHTML = '';
+		questionNumberEl.innerText = `Question ${currentQuestionIndex + 1} of ${questions.length}`;
+		progressBar.style.width = `${((currentQuestionIndex + 1) / questions.length) * 100}%`;
+		nextBtn.disabled = true;
+		question.options.forEach((option, index) => {
+			const button = document.createElement('button');
+			button.innerText = option;
+			button.onclick = () => selectAnswer(index, button);
+			optionsEl.appendChild(button);
+		});
+	}
+
+    function selectAnswer(optionIndex, button) {
+        Array.from(optionsEl.children).forEach(btn => btn.classList.remove('selected'));
+        button.classList.add('selected');
+        nextBtn.disabled = false;
+
+        // Scoring Logic
+        switch (currentQuestionIndex) {
+            case 0: // Question 1
+                if (optionIndex === 0) { // A
+                    TotalMarks++
+                } else if(optionIndex === 1) { // B
+                    TotalMarks+=2
+                } else if(optionIndex === 2) { // C
+                    TotalMarks+=3
+                } else if(optionIndex === 3) { // D
+                    TotalMarks+=4
+                }
+                break;
+            case 1: // Question 2
+                if (optionIndex === 0) { // A
+                    TotalMarks++
+                } else if(optionIndex === 1) { // B
+                    TotalMarks+=2
+                } else if(optionIndex === 2) { // C
+                    TotalMarks+=3
+                } else if(optionIndex === 3) { // D
+                    TotalMarks+=4
+                }
+                break;
+            case 2: // Question 3
+                if (optionIndex === 0) { // A
+                    TotalMarks++
+                } else if(optionIndex === 1) { // B
+                    TotalMarks+=2
+                } else if(optionIndex === 2) { // C
+                    TotalMarks+=3
+                } else if(optionIndex === 3) { // D
+                    TotalMarks+=4
+                }
+                break;
+            case 3: // Question 4
+                if (optionIndex === 0) { // A
+                    TotalMarks++
+                } else if(optionIndex === 1) { // B
+                    TotalMarks+=2
+                } else if(optionIndex === 2) { // C
+                    TotalMarks+=3
+                } else if(optionIndex === 3) { // D
+                    TotalMarks+=4
+                }
+                break;
+            case 4: // Question 5
+                if (optionIndex === 0) { // A
+                    TotalMarks++
+                } else if(optionIndex === 1) { // B
+                    TotalMarks+=2
+                } else if(optionIndex === 2) { // C
+                    TotalMarks+=3
+                } else if(optionIndex === 3) { // D
+                    TotalMarks+=4
+                }
+                break;
+            case 5: // Question 6
+                if (optionIndex === 0) { // A
+                    TotalMarks++
+                } else if(optionIndex === 1) { // B
+                    TotalMarks+=2
+                } else if(optionIndex === 2) { // C
+                    TotalMarks+=3
+                } else if(optionIndex === 3) { // D
+                    TotalMarks+=4
+                }
+                break;
+            case 6: // Question 7
+                if (optionIndex === 0) { // A
+                    TotalMarks++
+                } else if(optionIndex === 1) { // B
+                    TotalMarks+=2
+                } else if(optionIndex === 2) { // C
+                    TotalMarks+=3
+                } else if(optionIndex === 3) { // D
+                    TotalMarks+=4
+                }
+                break;
+            case 7: // Question 8
+                if (optionIndex === 0) { // A
+                    TotalMarks++
+                } else if(optionIndex === 1) { // B
+                    TotalMarks+=2
+                } else if(optionIndex === 2) { // C
+                    TotalMarks+=3
+                } else if(optionIndex === 3) { // D
+                    TotalMarks+=4
+                }
+                break;
+            case 8: // Question 9
+                if (optionIndex === 0) { // A
+                    TotalMarks++
+                } else if(optionIndex === 1) { // B
+                    TotalMarks+=2
+                } else if(optionIndex === 2) { // C
+                    TotalMarks+=3
+                } else if(optionIndex === 3) { // D
+                    TotalMarks+=4
+                }
+                break;
+            case 9: // Question 10
+                if (optionIndex === 0) { // A
+                    TotalMarks++
+                } else if(optionIndex === 1) { // B
+                    TotalMarks+=2
+                } else if(optionIndex === 2) { // C
+                    TotalMarks+=3
+                } else if(optionIndex === 3) { // D
+                    TotalMarks+=4
+                }
+                break;
+        }
+    }
+	nextBtn.onclick = () => {
+		const selectedOption = optionsEl.querySelector('button.selected');
+		if(selectedOption) {
+			TotalMarks += (selectedOption.innerText.charAt(0) === 'D') ? 1 : 0; // Assuming 'D' is the correct answer
+		}
+		currentQuestionIndex++;
+		if(currentQuestionIndex < questions.length) {
+			loadQuestion();
+		} else {
+			showResults();
+		}
+	};
+
+	function showResults() {
+    const resultContainer = document.createElement('div');
+    resultContainer.className = 'result-container';
+    document.body.innerHTML = ''; // Clear previous content
+    let grade, description;
+
+    // Determine grade and description based on TotalMarks
+    switch (true) {
+    case (TotalMarks >= 36):
+        grade = 'Very High Anger (ඉතා අධික කෝපය)';
+        description = 'ඔබ නිතරම දැඩි කෝපය අත්විඳින අතර එය ඔබේ ජීවිතයට සහ සබඳතාවලට සැලකිය යුතු ලෙස බලපෑ හැකිය.';
+        break;
+    case (TotalMarks >= 26):
+        grade = 'High Anger (අධික කෝපය)';
+        description = 'ඔබට බොහෝ විට කෝපයක් දැනෙන අතර සබඳතාවලට හානි කළ හැකි ආකාරයෙන් එය ප්රකාශ කළ හැකිය.';
+        break;
+    case (TotalMarks >= 16):
+        grade = 'Moderate Anger (මධ්යස්ථ කෝපය)';
+        description = 'ඔබ කෝපය අත්විඳින නමුත් සාමාන්යයෙන් එය හොඳින් කළමනාකරණය කරන්න; ඔබට සමහර විට එය ප්රකාශ කිරීමට හෝ ආරක්ෂාකාරී ලෙස ප්රතිචාර දැක්වීමට අරගල කළ හැක.';
+        break;
+    default:
+        grade = 'Low Anger (අඩු කෝපය)';
+        description = 'ඔබට කෝපයට සෞඛ්ය සම්පන්න ප්රවේශයක් ඇති අතර එය ඵලදායී ලෙස කළමනාකරණය කරයි.';
+        break;
+    }
+    // Create and display grade and description
+    const gradeDisplay = document.createElement('div');
+    gradeDisplay.innerText = `Your Grade: ${grade}`; // Fixed string interpolation
+    gradeDisplay.style.fontSize = '24px';
+    gradeDisplay.style.fontWeight = 'bold';
+    gradeDisplay.style.marginBottom = '10px';
+    gradeDisplay.style.color = grade === 'Low Anger (අඩු කෝපය)' ? '#4CAF50' :
+                               grade === 'Moderate Anger (මධ්‍යස්ථ කෝපය)' ? '#2196F3' :
+                               grade === 'High Anger (අධික කෝපය)' ? '#FF9800' : '#F44336';
+    resultContainer.appendChild(gradeDisplay);
+
+    const descriptionDisplay = document.createElement('div');
+    descriptionDisplay.innerText = description;
+    descriptionDisplay.style.marginTop = '10px';
+    descriptionDisplay.style.fontSize = '18px';
+    descriptionDisplay.style.lineHeight = '1.5';
+    resultContainer.appendChild(descriptionDisplay);
+
+    // Create Home button
+    const homeBtn = document.createElement('button');
+    homeBtn.innerText = 'Home';
+    homeBtn.className = 'home-btn'; // Add class for styling
+    homeBtn.onclick = () => {
+        location.reload(); // Reload the page to restart the quiz
+    };
+    resultContainer.appendChild(homeBtn);
+    
+    document.body.appendChild(resultContainer);
+}
+
+	</script>
+</body>
+
+</html>

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reflective Journaling - විමසන සඟරාව</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Link to your CSS file -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #4CAF50; /* Primary color */
+        }
+        h2 {
+            color: #333;
+        }
+        p {
+            line-height: 1.6;
+        }
+        .journal-section {
+            margin-bottom: 20px;
+        }
+        .question {
+            margin-bottom: 10px;
+        }
+        .answer-box {
+            width: 100%;
+            height: 100px; /* Adjust height as needed */
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            resize: vertical; /* Allows vertical resizing */
+        }
+        .back-button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 20px auto 0; /* Center the button */
+            background-color: #4CAF50; /* Primary color */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            font-size: 16px;
+        }
+        .back-button:hover {
+            background-color: #45a049; /* Darker shade for hover effect */
+        }
+        .submit-button {
+            display: block;
+            width: 150px; /* Set width of the button */
+            padding: 10px;
+            margin: 20px 0 0; /* Add top margin */
+            background-color: #007BFF; /* Blue color for submit button */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            font-size: 16px;
+            float: right; /* Aligns button to the right */
+        }
+        .submit-button:hover {
+            background-color: #0056b3; /* Darker shade for hover effect */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Reflective Journaling - විමසන සඟරාව</h1>
+
+        <h2>Reflective Journaling යනු:</h2>
+        <p>
+            Reflective Journaling යනු ඔබ සහ ඔබේ ජීවිතය පිළිබඳ ගැඹුරු අවබෝධයක් සහ අවබෝධයක් ලබා ගැනීම සඳහා ඔබේ සිතුවිලි, හැඟීම් සහ අත්දැකීම් ගැන ලිවීම ඇතුළත් වන භාවිතයකි. මෙම ආකාරයේ සඟරාව ස්වයං-ආවර්ජනය, විවේචනාත්මක චින්තනය සහ පෞද්ගලික වර්ධනය දිරිමත් කරයි. ඵලදායී ලෙස පරාවර්තක සඟරාවක නිරත වන ආකාරය මෙන්න:
+        </p>
+
+        <h2>Reflective Journaling සඳහා පියවර:</h2>
+        <ul>
+            <li>ඔබේ ජර්නලය තෝරන්න: ඔබට පහසුවක් දැනෙන සටහන් පොතක් හෝ ඩිජිටල් වේදිකාවක් තෝරන්න. එය ඔබට නිදහසේ අදහස් ප්‍රකාශ කරන අවකාශයක් විය යුතුය.</li>
+            <li>කාලය වෙන් කරන්න: ඔබේ පරාවර්තක සඟරාව සඳහා නිශ්චිත වේලාවන් වෙන් කරන්න. මෙය දිනපතා, සතිපතා හෝ ඔබට පරාවර්තනය කිරීමට අවශ්‍ය යැයි හැඟෙන සෑම විටම විය හැකිය.</li>
+            <li>නිදහසේ ලියන්න: ව්‍යාකරණ හෝ ව්‍යුහය ගැන කරදර නොවී ඔබේ සිතුවිලි ගලා යාමට ඉඩ දෙන්න. ඉලක්කය වන්නේ ඔබේ හැඟීම් සහ සිතුවිලි විවෘතව ප්රකාශ කිරීමයි.</li>
+            <li>අත්දැකීම් කෙරෙහි අවධානය යොමු කරන්න: ඔබේ ජීවිතයේ විශේෂිත අත්දැකීම් හෝ සිදුවීම් ගැන ලියන්න. සිදු වූ දේ, ඔබට හැඟුණු ආකාරය සහ එයින් ඔබ ඉගෙන ගත් දේ සලකා බලන්න.</li>
+            <li>ප්‍රශ්න අසන්න: ඔබේ ප්‍රතිබිම්බයන් විමසීමට විවෘත ප්‍රශ්න භාවිතා කරන්න. මෙම ප්‍රශ්න ඔබේ සිතුවිලි සහ හැඟීම් ගැඹුරට කිමිදීමට ඔබට උපකාර කරයි.</li>
+            <li>ඔබේ සිතුවිලි විශ්ලේෂණය කරන්න: ලිවීමෙන් පසු, ඔබේ පරාවර්තන විශ්ලේෂණය කිරීමට යම් කාලයක් ගත කරන්න. ඔබ දකින රටා මොනවාද? ඔබ ලබාගෙන ඇති අවබෝධය කුමක්ද?</li>
+            <li>වර්ධනය සඳහා ඉලක්ක සකසන්න: ඔබේ පරාවර්තන මත පදනම්ව, වැඩිදියුණු කිරීම හෝ වෙනස් කිරීම සඳහා පුද්ගලික ඉලක්ක තැබීම සලකා බලන්න.</li>
+            <li>නිතිපතා සමාලෝචනය කරන්න: කාලයත් සමඟ ඔබේ වර්ධනය නිරීක්ෂණය කිරීමට සහ වැදගත් තීක්ෂ්ණ බුද්ධිය නැවත බැලීමට ඔබේ ඇතුළත් කිරීම් වරින් වර කියවන්න.</li>
+        </ul>
+
+        <h2>Reflective Journaling කිරීමේ ප්‍රශ්න:</h2>
+        <div class="question">
+            <strong>1. මගේ දවසේ විශේෂත්වය කුමක්ද, එය වැදගත් වූයේ මන්ද?</strong>
+            <textarea class="answer-box"></textarea>
+        </div>
+
+        <div class="question">
+            <strong>2. අද මම මුහුණ දුන් අභියෝග මොනවාද, මම ඒවාට ප්‍රතිචාර දැක්වූයේ කෙසේද?</strong>
+            <textarea class="answer-box"></textarea>
+        </div>
+
+        <div class="question">
+            <strong>3. දවස පුරා මා අත්විඳි හැඟීම් මොනවාද සහ ඒවා අවුලුවාලූයේ කුමක්ද?</strong>
+            <textarea class="answer-box"></textarea>
+        </div>
+
+        <div class="question">
+            <strong>4. අද මම මා ගැන අලුත් දෙයක් ඉගෙන ගත්තාද? එසේ නම්, එය කුමක්ද?</strong>
+            <textarea class="answer-box"></textarea>
+        </div>
+
+        <div class="question">
+            <strong>5. අද මම කෘතඥ වන්නේ කුමක් සඳහාද, සහ මගේ ජීවිතයේ කෘතඥතාව වර්ධනය කර ගන්නේ කෙසේද?</strong>
+            <textarea class="answer-box"></textarea>
+        </div>
+
+        <div class="question">
+            <strong>6. මෑතකදී මා අත්විඳි සතුටේ මොහොත කුමක්ද?</strong>
+            <textarea class="answer-box"></textarea>
+        </div>
+
+        <div class="question">
+            <strong>7. මම දුෂ්කර තත්වයක් සමඟ කටයුතු කළේ කෙසේද, ඊළඟ වතාවේ මම වෙනස් ආකාරයකින් කරන්නේ කුමක්ද?</strong>
+            <textarea class="answer-box"></textarea>
+        </div>
+
+        <div class="question">
+            <strong>8. ඉදිරි සතිය තුළ මට අවධානය යොමු කිරීමට අවශ්‍ය ඉලක්ක මොනවාද?</strong>
+            <textarea class="answer-box"></textarea>
+        </div>
+
+        <div class="question">
+            <strong>9. මට තවදුරටත් ගවේෂණය කිරීමට අවශ්‍ය මගේ ජීවිතයේ පුනරාවර්තන තේමාව කුමක්ද?</strong>
+            <textarea class="answer-box"></textarea>
+        </div>
+
+        <div class="question">
+            <strong>10. මගේ ස්වයං රැකවරණය සහ යහපැවැත්ම වැඩිදියුණු කර ගන්නේ කෙසේද?</strong>
+            <textarea class="answer-box"></textarea>
+        </div>
+
+        <button class="submit-button">Submit</button> <!-- Submit button aligned to the right -->
+
+        <a href="index.html" class="back-button">Back to Home</a> <!-- Link to your homepage -->
+    </div>
+</body>
+</html>
